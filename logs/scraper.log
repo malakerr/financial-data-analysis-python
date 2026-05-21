@@ -1,0 +1,13 @@
+2026-05-21 16:31:25,122 INFO Starting pipeline for NETFLIX
+2026-05-21 16:31:25,122 INFO Fetching URL for NETFLIX: https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-PY0220EN-SkillsNetwork/labs/project/netflix_data_webpage.html
+2026-05-21 16:31:26,728 INFO Parsing HTML for NETFLIX
+2026-05-21 16:31:26,761 INFO Saved raw data to data/raw\NETFLIX_raw_20260521_163126.csv
+2026-05-21 16:31:26,761 INFO Cleaning stock data with 70 rows
+2026-05-21 16:31:26,767 INFO Cleaned dataframe contains 70 rows
+2026-05-21 16:31:26,768 INFO Saved cleaned data to data/clean\NETFLIX_clean_20260521_163126.csv
+2026-05-21 16:31:26,769 INFO Saved CSV output to data/output\NETFLIX_clean.csv
+2026-05-21 16:31:26,770 INFO Saved JSON output to data/output\NETFLIX_clean.json
+2026-05-21 16:31:26,780 INFO Adding analysis columns
+2026-05-21 16:31:27,480 INFO Saved visualization to data/output\NETFLIX_close_plot.png
+2026-05-21 16:31:27,480 INFO Saved chart: data/output\NETFLIX_close_plot.png
+2026-05-21 16:31:27,481 INFO Pipeline completed for NETFLIX

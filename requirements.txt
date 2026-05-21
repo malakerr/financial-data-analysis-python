@@ -1,0 +1,7 @@
+pandas
+requests
+beautifulsoup4
+pyyaml
+matplotlib
+lxml
+html5lib

@@ -1,25 +1,64 @@
-# Extracting Stock Data Using Web Scraping
+# Financial Data Scraper Pipeline
 
 ## Overview
-This project demonstrates how to use web scraping to collect stock data that is not available through the assigned API. The goal is to extract and share historical financial data from a web page using the BeautifulSoup library.
+This repository contains a reusable scraper pipeline for collecting financial stock data, cleaning it, storing it, analyzing it, and generating visualizations.
 
-## Objective
-- Use web scraping to obtain financial data that is missing from the API.
-- Extract historical stock information from a web page.
-- Parse and clean the data using Python and BeautifulSoup.
+## Project Structure
+```
+financial-data-analysis-python/
+├── README.md
+├── requirements.txt
+├── config.yaml
+├── scraper.py
+├── scraper/
+│   ├── __init__.py
+│   ├── manager.py
+│   ├── parser.py
+│   ├── cleaning.py
+│   ├── storage.py
+│   ├── analysis.py
+│   ├── visualization.py
+│   └── utils.py
+├── data/
+│   ├── raw/
+│   ├── clean/
+│   ├── output/
+│   └── db/
+├── notebooks/
+│   └── revenue_dashboard.ipynb
+├── tests/
+│   └── test_manager.py
+└── logs/
+```
 
-## Tools and Libraries
-- Python
-- BeautifulSoup (`bs4`)
-- Requests
+## What the pipeline does
+- **Data Collection:** Scrapes stock data from a web page
+- **Data Storage:** Writes raw and cleaned data to CSV files and optionally SQLite
+- **Data Processing:** Converts dates and numeric values, removes bad rows, and sorts by date
+- **Data Analysis:** Adds daily returns, moving averages, and volatility columns
+- **Data Visualization:** Saves a price chart as a PNG file
 
-## Assignment Requirements
-- Not all stock data is available via the API in this assignment.
-- Use web scraping to obtain the required financial data.
-- Extract historical data from a web page.
-- Use the BeautifulSoup library to parse HTML and collect financial details.
+## Usage
+1. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+2. Update `config.yaml` with the stock symbols and URLs you want to scrape.
+3. Run the pipeline:
+   ```bash
+   python scraper.py --stock NETFLIX --output all
+   ```
+4. Use `--no-analysis` to skip analysis and charts:
+   ```bash
+   python scraper.py --stock NETFLIX --output csv --no-analysis
+   ```
+
+## Configuration
+- `config.yaml` defines the stocks and output settings
+- `requirements.txt` lists required Python packages
+- `data/raw/`, `data/clean/`, and `data/output/` store the pipeline files
 
 ## Notes
-- Make sure to follow the website's terms of service and scraping policies.
-- Use appropriate headers and request handling when accessing web pages.
-- Store or display the extracted historical data in a clear format.
+- The scraper is modular and reusable for multiple stock URLs.
+- `scraper.py` is the CLI entry point.
+- `tests/` contains a simple unit test scaffold.

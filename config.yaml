@@ -1,0 +1,14 @@
+stocks:
+  - symbol: NETFLIX
+    url: https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-PY0220EN-SkillsNetwork/labs/project/netflix_data_webpage.html
+
+output:
+  csv: true
+  json: true
+  sqlite: false
+  output_folder: data/output
+  raw_folder: data/raw
+  clean_folder: data/clean
+  sqlite_path: data/db/scraper_data.db
+  save_charts: true
+  log_file: logs/scraper.log
