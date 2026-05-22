@@ -36,6 +36,16 @@ financial-data-analysis-python/
 - **Data Analysis:** Adds daily returns, moving averages, and volatility columns
 - **Data Visualization:** Saves a price chart as a PNG file
 
+## Tech Stack
+- **Language:** Python 3.x
+- **Data Manipulation:** Pandas
+- **Web Scraping:** BeautifulSoup, Requests
+- **HTML Parsing:** lxml, html5lib
+- **Data Analysis:** Pandas (moving averages, volatility)
+- **Visualization:** Matplotlib
+- **Configuration:** PyYAML
+- **Data Storage:** CSV, JSON, SQLite
+
 ## Usage
 1. Install dependencies:
    ```bash
