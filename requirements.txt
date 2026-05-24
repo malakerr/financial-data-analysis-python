@@ -1,7 +1,4 @@
-pandas
-requests
-beautifulsoup4
-pyyaml
-matplotlib
-lxml
-html5lib
+pandas>=2.0,<4.0
+pyyaml>=6.0
+matplotlib>=3.7
+yfinance>=0.2.40

@@ -1,6 +1,6 @@
 stocks:
-  - symbol: NETFLIX
-    url: https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-PY0220EN-SkillsNetwork/labs/project/netflix_data_webpage.html
+  - symbol: NFLX
+    period: 5y
 
 output:
   csv: true

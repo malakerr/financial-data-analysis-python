@@ -7,7 +7,10 @@ def clean_stock_data(df: pd.DataFrame, logger: Any) -> pd.DataFrame:
     result = df.copy()
 
     if 'Date' in result.columns:
-        result['Date'] = pd.to_datetime(result['Date'], errors='coerce')
+        dates = pd.to_datetime(result['Date'], errors='coerce')
+        if dates.dt.tz is not None:
+            dates = dates.dt.tz_convert(None)
+        result['Date'] = dates
 
     numeric_columns = ['Open', 'High', 'Low', 'Close', 'Adj Close', 'Volume']
     for column in numeric_columns:
@@ -15,13 +18,14 @@ def clean_stock_data(df: pd.DataFrame, logger: Any) -> pd.DataFrame:
             result[column] = (
                 result[column]
                 .astype(str)
-                .str.replace(',', '')
-                .str.replace('-', '')
+                .str.replace(',', '', regex=False)
+                .str.replace(r'^-$', '', regex=True)  # strip placeholder dashes, not minus signs
             )
             result[column] = pd.to_numeric(result[column], errors='coerce')
 
     result = result.dropna(subset=['Date'])
-    result = result.dropna(axis=0, how='all', subset=numeric_columns)
+    available_numeric = [c for c in numeric_columns if c in result.columns]
+    result = result.dropna(axis=0, how='all', subset=available_numeric)
     result = result.sort_values(by='Date').reset_index(drop=True)
 
     if result.empty:

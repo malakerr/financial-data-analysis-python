@@ -1,5 +1,4 @@
 import argparse
-from importlib.resources import path
 import yaml
 from scraper.manager import ScraperManager
 from scraper.utils import setup_logging

@@ -1,43 +1,31 @@
-import requests
+import time
+import yfinance as yf
 import pandas as pd
-from bs4 import BeautifulSoup
 from typing import Any
 
 
-def parse_stock_page(url: str, symbol: str, logger: Any) -> pd.DataFrame:
-    logger.info('Fetching URL for %s: %s', symbol, url)
-    response = requests.get(url, timeout=15)
-    response.raise_for_status()
+def fetch_stock_data(symbol: str, period: str, logger: Any) -> pd.DataFrame:
+    logger.info('Fetching %s from Yahoo Finance (period=%s)', symbol, period)
+    last_exc: Exception = RuntimeError('Unknown error')
+    for attempt in range(1, 4):
+        try:
+            ticker = yf.Ticker(symbol)
+            df = ticker.history(period=period)
+            if not df.empty:
+                break
+            logger.warning('Empty response for %s on attempt %d', symbol, attempt)
+        except Exception as exc:
+            last_exc = exc
+            logger.warning('Attempt %d failed for %s: %s', attempt, symbol, exc)
+        if attempt < 3:
+            time.sleep(2 ** attempt)
+    else:
+        raise ValueError(f'Failed to fetch data for {symbol} after 3 attempts') from last_exc
 
-    logger.info('Parsing HTML for %s', symbol)
-    soup = BeautifulSoup(response.text, 'html.parser')
-    table = soup.find('tbody')
-    if not table:
-        logger.warning('Could not find <tbody> in HTML, attempting pandas fallback for %s', symbol)
-        return parse_with_pandas(url, symbol, logger)
+    if df.empty:
+        raise ValueError(f'No data returned for symbol: {symbol}')
 
-    rows = []
-    for row in table.find_all('tr'):
-        cols = [cell.text.strip() for cell in row.find_all('td')]
-        if len(cols) >= 7:
-            rows.append(cols[:7])
-
-    if not rows:
-        logger.warning('No rows were extracted from HTML table. Falling back to pandas for %s', symbol)
-        return parse_with_pandas(url, symbol, logger)
-
-    df = pd.DataFrame(rows, columns=['Date', 'Open', 'High', 'Low', 'Close', 'Adj Close', 'Volume'])
+    df = df.reset_index()
     df['Symbol'] = symbol.upper()
-    return df
-
-
-def parse_with_pandas(url: str, symbol: str, logger: Any) -> pd.DataFrame:
-    logger.info('Using pandas read_html fallback for %s', symbol)
-    tables = pd.read_html(url)
-    if not tables:
-        raise ValueError(f'No tables found at URL: {url}')
-    df = tables[0]
-    if 'Date' not in df.columns:
-        logger.warning('Pandas table does not include Date column for %s', symbol)
-    df['Symbol'] = symbol.upper()
-    return df
+    cols = ['Date', 'Open', 'High', 'Low', 'Close', 'Volume', 'Symbol']
+    return df[[c for c in cols if c in df.columns]]
